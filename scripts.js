@@ -1,4 +1,4 @@
-const gameBoard = () => {
+const gameBoard = (() => {
   const gameBoardContainer = document.querySelector(".game-board-container");
   const gameBoardArray = [];
 
@@ -8,8 +8,11 @@ const gameBoard = () => {
 
       boardSquare.classList.add("game-board-square");
       boardSquare.setAttribute("data-index", i);
+
+      gameBoardContainer.appendChild(boardSquare);
     }
-    gameBoardContainer.appendChild(boardSquare);
   };
   return { createGameBoard };
-};
+})();
+
+
