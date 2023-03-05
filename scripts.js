@@ -1,8 +1,10 @@
 const gameBoard = (() => {
   const gameBoardContainer = document.querySelector(".game-board-container");
-  const gameBoardArray = [];
+  const gameBoardArray = ["", "", "", "", "", "", "", "", ""];
 
-  const saveMove = (move) => gameBoardArray.push(move);
+  const saveMove = (index, move) => {
+    gameBoardArray[index] = move;
+  };
 
   const createGameBoard = () => {
     for (let i = 0; i < 9; i++) {
@@ -14,7 +16,7 @@ const gameBoard = (() => {
       gameBoardContainer.appendChild(boardSquare);
     }
   };
-  return { createGameBoard, saveMove, gameBoardArray};
+  return { createGameBoard, saveMove};
 })();
 
 const createPlayer = (name, move) => {
@@ -36,28 +38,22 @@ const playGame = (() => {
       } else {
         currentMove = currentMove === "X" ? "O" : "X";
         square.innerText = currentMove;
-        gameBoard.saveMove(currentMove);
+        gameBoard.saveMove(square.dataset.index, currentMove);
       }
     });
   });
 })();
 
-let winnerLogic = {
-  horizontalWin: [
-    [0, 1, 2],
-    [3, 4, 5],
-    [6, 7, 8],
-  ],
+let winnerLogic = [
+  [0, 1, 2],
+  [3, 4, 5],
+  [6, 7, 8],
 
-  verticalWin: [
-    [0, 3, 6],
-    [1, 4, 7],
-    [2, 5, 8],
-  ],
+  [0, 3, 6],
+  [1, 4, 7],
+  [2, 5, 8],
 
-  diagonalWin: [
-    [0, 4, 8],
-    [2, 4, 6],
-  ],
-};
+  [0, 4, 8],
+  [2, 4, 6],
+];
 console.log(winnerLogic);
