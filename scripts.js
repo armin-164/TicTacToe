@@ -16,5 +16,24 @@ const gameBoard = (() => {
 })();
 
 const createPlayer = (name, move) => {
-    return {name, move}
-}
+  return { name, move };
+};
+
+const playGame = (() => {
+  gameBoard.createGameBoard();
+
+  let allBoardSquares = document.querySelectorAll(".game-board-square");
+  let currentMove = "X";
+
+  allBoardSquares.forEach((square) => {
+    square.addEventListener("click", () => {
+      if (square.innerText === "x" || square.innerText === "o") {
+        return;
+      }
+      else {
+        currentMove = currentMove === "X" ? "O" : "X";
+        square.innerText = currentMove;
+      }
+    });
+  });
+})();
