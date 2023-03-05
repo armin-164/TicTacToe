@@ -15,4 +15,6 @@ const gameBoard = (() => {
   return { createGameBoard };
 })();
 
-
+const createPlayer = (name, move) => {
+    return {name, move}
+}
