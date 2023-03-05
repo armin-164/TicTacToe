@@ -1,0 +1,21 @@
+.main {
+    display: flex;
+    justify-content: center;
+}
+
+.game-board-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    width: 25vw;
+    height: 25vw;
+}
+
+.game-board-square {
+    padding: 50px;
+    background-color: green;
+    height: 
+    
+}
+div {
+    border: 1px solid blue;
+}
