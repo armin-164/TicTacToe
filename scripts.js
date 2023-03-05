@@ -2,6 +2,8 @@ const gameBoard = (() => {
   const gameBoardContainer = document.querySelector(".game-board-container");
   const gameBoardArray = [];
 
+  const saveMove = (move) => gameBoardArray.push(move);
+
   const createGameBoard = () => {
     for (let i = 0; i < 9; i++) {
       let boardSquare = document.createElement("div");
@@ -12,7 +14,7 @@ const gameBoard = (() => {
       gameBoardContainer.appendChild(boardSquare);
     }
   };
-  return { createGameBoard };
+  return { createGameBoard, saveMove };
 })();
 
 const createPlayer = (name, move) => {
@@ -29,10 +31,10 @@ const playGame = (() => {
     square.addEventListener("click", () => {
       if (square.innerText === "x" || square.innerText === "o") {
         return;
-      }
-      else {
+      } else {
         currentMove = currentMove === "X" ? "O" : "X";
         square.innerText = currentMove;
+        gameBoard.saveMove(currentMove);
       }
     });
   });
