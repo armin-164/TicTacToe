@@ -1,6 +1,9 @@
 const gameBoard = (() => {
   const gameBoardContainer = document.querySelector(".game-board-container");
-  const gameBoardArray = ["", "", "", "", "", "", "", "", ""];
+  const resetButton = document.querySelector(".reset-button");
+  const marker_X_button = document.querySelector("#move-x");
+  const marker_O_button = document.querySelector("#move-o");
+  let gameBoardArray = ["", "", "", "", "", "", "", "", ""];
 
   let winnerLogic = [
     [0, 1, 2],
@@ -15,6 +18,15 @@ const gameBoard = (() => {
     [2, 4, 6],
   ];
 
+  const resetGame = (element) => {
+    gameBoardArray = ["", "", "", "", "", "", "", "", ""];
+    element.forEach((node) => (node.innerText = ""));
+  };
+
+  const selectAllSquares = (square) => {
+    return (allBoardSquares = document.querySelectorAll(square));
+  };
+
   // This function takes marker and player as parameter
   // It goes through winnerLogic and "finds" the combo
   // by checking the indexes from the combo ON the gameBoardArray
@@ -22,13 +34,15 @@ const gameBoard = (() => {
   // If winner is true, alert that the player has won
   // Else if gameboardarray isnt empty, alert its a tie since
   // the previous if statement checks for a winner everytime
-  const checkWinner = (marker, player) => {
+  const checkWinner = (marker, player, element) => {
     const winner = winnerLogic.find((combo) =>
       combo.every((i) => gameBoardArray[i] === marker)
     );
     if (winner) {
       alert(`${player} has won`);
+      resetGame(element);
     } else if (!gameBoardArray.includes("")) {
+      resetGame(element);
       alert("its a tie");
     }
   };
@@ -49,7 +63,7 @@ const gameBoard = (() => {
       gameBoardContainer.appendChild(boardSquare);
     }
   };
-  return { createGameBoard, saveMove, checkWinner };
+  return { createGameBoard, saveMove, checkWinner, selectAllSquares };
 })();
 
 const createPlayer = (name, move) => {
@@ -61,13 +75,13 @@ const playGame = (() => {
 
   const jeff = createPlayer("jeff", "X");
   const joe = createPlayer("joe", "O");
+  let allBoardSquares = gameBoard.selectAllSquares(".game-board-square");
 
-  let allBoardSquares = document.querySelectorAll(".game-board-square");
   let currentMove = "X";
 
   allBoardSquares.forEach((square) => {
     square.addEventListener("click", () => {
-      if (square.innerText === "x" || square.innerText === "o") {
+      if (square.innerText === "X" || square.innerText === "O") {
         return;
       } else {
         currentMove = currentMove === "X" ? "O" : "X";
@@ -75,12 +89,11 @@ const playGame = (() => {
         gameBoard.saveMove(square.dataset.index, currentMove);
 
         if (currentMove === jeff.move) {
-          gameBoard.checkWinner(currentMove, jeff.name);
+          gameBoard.checkWinner(currentMove, jeff.name, allBoardSquares);
         } else if (currentMove === joe.move) {
-          gameBoard.checkWinner(currentMove, joe.name);
+          gameBoard.checkWinner(currentMove, joe.name, allBoardSquares);
         }
       }
     });
   });
 })();
-
