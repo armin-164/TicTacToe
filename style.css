@@ -23,6 +23,27 @@ body {
 
 }
 
+.main > p {
+    font-size: 20px;
+}
+
+.move-options {
+    padding: 10px 40px;
+    margin-bottom: 20px;
+    display: flex;
+    gap: 40px;
+}
+
+.move-options > button {
+    font-size: 2em;
+    padding: 5px 20px;
+    background-color: red;
+    color: white;
+    font-weight: bold;
+    border-radius: 5px;
+    border: 0;
+}
+
 .game-board-container {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
