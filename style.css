@@ -1,7 +1,26 @@
+body {
+    margin: 0;
+    font-family: "Quicksand", sans-serif;
+}
+
 .main {
     display: flex;
     align-items: center;
     flex-direction: column;
+}
+
+.title {
+    font-size: 4em;
+}
+
+.reset-button {
+    font-size: 2em;
+    font-weight: bold;
+    padding: 5px 25px;
+    color: white;
+    background-color: rgb(109, 109, 238);
+    border-radius: 10px;
+
 }
 
 .game-board-container {
