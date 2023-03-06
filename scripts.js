@@ -1,9 +1,8 @@
 const gameBoard = (() => {
   const gameBoardContainer = document.querySelector(".game-board-container");
-  const resetButton = document.querySelector(".reset-button");
-  const marker_X_button = document.querySelector("#move-x");
-  const marker_O_button = document.querySelector("#move-o");
+
   let gameBoardArray = ["", "", "", "", "", "", "", "", ""];
+  let gameOver = false;
 
   let winnerLogic = [
     [0, 1, 2],
@@ -18,9 +17,14 @@ const gameBoard = (() => {
     [2, 4, 6],
   ];
 
-  const resetGame = (element) => {
+  const getGameStatus = () => {
+    return gameOver;
+  }
+
+  const resetGame = (element, marker) => {
     gameBoardArray = ["", "", "", "", "", "", "", "", ""];
     element.forEach((node) => (node.innerText = ""));
+    gameOver = false;
   };
 
   const selectAllSquares = (square) => {
@@ -40,10 +44,10 @@ const gameBoard = (() => {
     );
     if (winner) {
       alert(`${player} has won`);
-      resetGame(element);
+      gameOver = true;
     } else if (!gameBoardArray.includes("")) {
-      resetGame(element);
       alert("its a tie");
+      gameOver = true;
     }
   };
 
@@ -63,7 +67,14 @@ const gameBoard = (() => {
       gameBoardContainer.appendChild(boardSquare);
     }
   };
-  return { createGameBoard, saveMove, checkWinner, selectAllSquares };
+  return {
+    createGameBoard,
+    saveMove,
+    checkWinner,
+    resetGame,
+    selectAllSquares,
+    getGameStatus,
+  };
 })();
 
 const createPlayer = (name, move) => {
@@ -71,17 +82,26 @@ const createPlayer = (name, move) => {
 };
 
 const playGame = (() => {
+  const resetButton = document.querySelector(".reset-button");
+  const marker_X_button = document.querySelector("#move-x");
+  const marker_O_button = document.querySelector("#move-o");
+
   gameBoard.createGameBoard();
 
   const jeff = createPlayer("jeff", "X");
   const joe = createPlayer("joe", "O");
   let allBoardSquares = gameBoard.selectAllSquares(".game-board-square");
 
+  resetButton.addEventListener("click", () =>
+    gameBoard.resetGame(allBoardSquares)
+  );
+
   let currentMove = "X";
 
   allBoardSquares.forEach((square) => {
     square.addEventListener("click", () => {
-      if (square.innerText === "X" || square.innerText === "O") {
+      console.log(gameBoard.getGameStatus());
+      if (gameBoard.getGameStatus() || square.innerText === "X" || square.innerText === "O") {
         return;
       } else {
         currentMove = currentMove === "X" ? "O" : "X";
