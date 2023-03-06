@@ -1,6 +1,7 @@
 .main {
     display: flex;
-    justify-content: center;
+    align-items: center;
+    flex-direction: column;
 }
 
 .game-board-container {
@@ -11,11 +12,13 @@
 }
 
 .game-board-square {
-    padding: 50px;
+    height: auto;
     background-color: green;
-    height: 
-    
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
+
 div {
     border: 1px solid blue;
 }
