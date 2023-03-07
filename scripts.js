@@ -19,12 +19,13 @@ const gameBoard = (() => {
 
   const getGameStatus = () => {
     return gameOver;
-  }
+  };
 
-  const resetGame = (element, marker) => {
+  const resetGame = (element, paragraph) => {
     gameBoardArray = ["", "", "", "", "", "", "", "", ""];
     element.forEach((node) => (node.innerText = ""));
     gameOver = false;
+    paragraph.innerText = "Choose your moves";
   };
 
   const selectAllSquares = (square) => {
@@ -43,7 +44,7 @@ const gameBoard = (() => {
       combo.every((i) => gameBoardArray[i] === marker)
     );
     if (winner) {
-      alert(`${player} has won`);
+      element.innerText = `Congratulations to ${player}, time to reset`;
       gameOver = true;
     } else if (!gameBoardArray.includes("")) {
       alert("its a tie");
@@ -77,7 +78,8 @@ const gameBoard = (() => {
   };
 })();
 
-const createPlayer = (name, move) => {
+const createPlayer = (move) => {
+  const name = prompt("What's your name?");
   return { name, move };
 };
 
@@ -85,33 +87,69 @@ const playGame = (() => {
   const resetButton = document.querySelector(".reset-button");
   const marker_X_button = document.querySelector("#move-x");
   const marker_O_button = document.querySelector("#move-o");
+  const winner_paragraph = document.querySelector(".paragraph");
 
   gameBoard.createGameBoard();
 
-  const jeff = createPlayer("jeff", "X");
-  const joe = createPlayer("joe", "O");
+  let firstPlayer, secondPlayer;
+  let playerContainer = [];
+  let currentMove = "";
+
+  marker_X_button.addEventListener("click", () => {
+    firstPlayer = createPlayer("X");
+    if (playerContainer.length <= 2) {
+      playerContainer.push(firstPlayer);
+    }
+    if (currentMove === "") {
+      currentMove = "O";
+    }
+  });
+  marker_O_button.addEventListener("click", () => {
+    secondPlayer = createPlayer("O");
+    if (playerContainer.length <= 2) {
+      playerContainer.push(secondPlayer);
+    }
+    if (currentMove === "") {
+      currentMove = "X";
+    }
+  });
+
   let allBoardSquares = gameBoard.selectAllSquares(".game-board-square");
 
-  resetButton.addEventListener("click", () =>
-    gameBoard.resetGame(allBoardSquares)
-  );
-
-  let currentMove = "X";
+  resetButton.addEventListener("click", () => {
+    gameBoard.resetGame(allBoardSquares, winner_paragraph);
+    playerContainer = [];
+  });
 
   allBoardSquares.forEach((square) => {
     square.addEventListener("click", () => {
-      console.log(gameBoard.getGameStatus());
-      if (gameBoard.getGameStatus() || square.innerText === "X" || square.innerText === "O") {
+
+      if (
+        gameBoard.getGameStatus() ||
+        square.innerText === "X" ||
+        square.innerText === "O" ||
+        playerContainer.length < 2
+      ) {
         return;
-      } else {
+        } 
+
+      else {
         currentMove = currentMove === "X" ? "O" : "X";
         square.innerText = currentMove;
         gameBoard.saveMove(square.dataset.index, currentMove);
 
-        if (currentMove === jeff.move) {
-          gameBoard.checkWinner(currentMove, jeff.name, allBoardSquares);
-        } else if (currentMove === joe.move) {
-          gameBoard.checkWinner(currentMove, joe.name, allBoardSquares);
+        if (currentMove === firstPlayer.move) {
+          gameBoard.checkWinner(
+            currentMove,
+            firstPlayer.name,
+            winner_paragraph
+          );
+        } else if (currentMove === secondPlayer.move) {
+          gameBoard.checkWinner(
+            currentMove,
+            secondPlayer.name,
+            winner_paragraph
+          );
         }
       }
     });
